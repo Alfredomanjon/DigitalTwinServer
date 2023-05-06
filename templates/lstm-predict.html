@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 class="lstm-predict-title">Predecir la carga del tráfico con LSTM</h1>
+{% endblock %}
+
+{% block lstmFormContent %}
+<div class="lstm-input-container">
+    <div>
+        <form class="form-group" method="POST" action="{{ url_for('ui_predictions.lstmPredict') }}">
+            <div class="container inputs-container">
+                <div class="row input-row">
+                    <input class="form-control" type="text" id="carga_radar_base" name="carga_radar_base"
+                        placeholder=" Carga radar base" aria-label="Search">
+                </div>
+                <div class="row input-row">
+                    <input class="form-control" type="text" id="carga_radar_1" name="carga_radar_1"
+                        placeholder="Carga radar 1" aria-label="Search">
+                    <input class="form-control" type="text" id="distancia_radar_1" name="distancia_radar_1"
+                        placeholder="Distancia radar 1" aria-label="Search">
+                    <input class="form-control" type="text" id="duracion_radar_1" name="duracion_radar_1"
+                        placeholder="Duracion radar 1" aria-label="Search">
+                    <input class="form-control" type="text" id="carga_radar_2" name="carga_radar_2"
+                        placeholder="Carga radar 2" aria-label="Search">
+                    <input class="form-control" type="text" id="distancia_radar_2" name="distancia_radar_2"
+                        placeholder="Distancia radar 2" aria-label="Search">
+                    <input class="form-control" type="text" id="duracion_radar_2" name="duracion_radar_2"
+                        placeholder="Duracion radar 2" aria-label="Search">
+                </div>
+                <div class="row input-row">
+                    <input class="form-control" type="text" id="carga_radar_3" name="carga_radar_3"
+                        placeholder="Carga radar 3" aria-label="Search">
+                    <input class="form-control" type="text" id="distancia_radar_3" name="distancia_radar_3"
+                        placeholder="Distancia radar 3" aria-label="Search">
+                    <input class="form-control" type="text" id="duracion_radar_3" name="duracion_radar_3"
+                        placeholder="Duracion radar 3" aria-label="Search">
+                    <input class="form-control" type="text" id="carga_radar_4" name="carga_radar_4"
+                        placeholder="Carga radar 4" aria-label="Search">
+                    <input class="form-control" type="text" id="distancia_radar_4" name="distancia_radar_4"
+                        placeholder="Distancia radar 4" aria-label="Search">
+                    <input class="form-control" type="text" id="duracion_radar_4" name="duracion_radar_4"
+                        placeholder="Duracion radar 4" aria-label="Search">
+                </div>
+                <div class="row input-row">
+                    <input class="form-control" type="text" id="carga_radar_5" name="carga_radar_5"
+                        placeholder="Carga radar 5" aria-label="Search">
+                    <input class="form-control" type="text" id="distancia_radar_5" name="distancia_radar_5"
+                        placeholder="Distancia radar 5" aria-label="Search">
+                    <input class="form-control" type="text" id="duracion_radar_5" name="duracion_radar_5"
+                        placeholder="Duracion radar 5" aria-label="Search">
+                </div>
+                <div class="col-12 form-button-container">
+                    <button type="submit" class="btn btn-dark">Añadir campo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block table %}
+<table>
+    <thead>
+        <tr style="text-align: right;">
+            <th>Crg.base</th>
+            <th>Crg.1</th>
+            <th>Dist.1</th>
+            <th>Dur.1</th>
+            <th>Crg.2</th>
+            <th>Dist.2</th>
+            <th>Dur.2</th>
+            <th>Crg.3</th>
+            <th>Dist.3</th>
+            <th>Dur.3</th>
+            <th>Crg.4</th>
+            <th>Dist.4</th>
+            <th>Dur.4</th>
+            <th>Crg.5</th>
+            <th>Dist.5</th>
+            <th>Dur.5</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
+        <tr>
+            <th>{{ item['carga_radar_base'] }}</th>
+            <th>{{ item['carga_radar_1'] }}</th>
+            <th>{{ item['distancia_radar_1'] }}</th>
+            <th>{{ item['duracion_radar_1'] }}</th>
+            <th>{{ item['carga_radar_2'] }}</th>
+            <th>{{ item['distancia_radar_2'] }}</th>
+            <th>{{ item['duracion_radar_2'] }}</th>
+            <th>{{ item['carga_radar_3'] }}</th>
+            <th>{{ item['distancia_radar_3'] }}</th>
+            <th>{{ item['duracion_radar_3'] }}</th>
+            <th>{{ item['carga_radar_4'] }}</th>
+            <th>{{ item['distancia_radar_4'] }}</th>
+            <th>{{ item['duracion_radar_4'] }}</th>
+            <th>{{ item['carga_radar_5'] }}</th>
+            <th>{{ item['distancia_radar_5'] }}</th>
+            <th>{{ item['duracion_radar_5'] }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<form class="form-group" method="GET" action="{{ url_for('ui_predictions.lstmPredict') }}">
+    <div class="col-12 predict-button-container">
+        <button type="submit" class="btn btn-info">Predecir tramo</button>
+    </div>
+</form>
+
+{% endblock %}

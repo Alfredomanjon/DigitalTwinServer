@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 class="lstm-predict-title">Predecir la carga del tráfico con Prophet</h1>
+{% endblock %}
+
+{% block lstmFormContent %}
+<div class="lstm-input-container">
+    <div>
+        <form class="form-group" method="POST" action="{{ url_for('ui_predictions.prophetPredict') }}">
+            <div class="container inputs-container">
+                <div class="row input-row prophet-inputs-container ">
+                    <input class="form-control" type="text" id="date_input_1" name="date_input_1"
+                        placeholder="aaaa-mm-dd hh:mm:ss" aria-label="Search">
+                </div>
+            </div>
+            <div class="col-12 form-button-container">
+                <button type="submit" class="btn btn-dark">Añadir campo</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block table %}
+<table>
+    <thead>
+        <tr style="text-align: right;">
+            <th>Fechas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in dateList %}
+        <tr>
+            <th>{{ item }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<form class="form-group" method="GET" action="{{ url_for('ui_predictions.prophetPredict') }}">
+    <div class="col-12 predict-button-container">
+        <button type="submit" class="btn btn-info">Predecir tramo</button>
+    </div>
+</form>
+{% endblock %}

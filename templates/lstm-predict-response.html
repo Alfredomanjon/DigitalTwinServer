@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 class="lstm-predict-title">Resultado de la predicción</h1>
+{% endblock %}
+
+{% block lstmFormContent %}
+<div class="response-input-container">
+    <form class="form-group" method="GET" action="{{ url_for('ui_predictions.lstmPredict') }}">
+        <div class="container inputs-container">
+            <div class="predict-title-container ">
+                <p class="predict-title-text">{{ data }}</p>
+                <p class="predict-subtitle">%</p>
+            </div>
+            <p class="info-subtitle">Carga estimada en un tiempo T determinado</p>
+            <div class="col-12 form-button-container">
+                <button type="submit" class="btn btn-dark">Volver a predecir</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/alfredo/Desktop/lstm-flask/flaskr/mlruns/0/e1fb7e915bb542389b14d4bc19fa8eaa/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e1fb7e915bb542389b14d4bc19fa8eaa
+run_name: bemused-kite-36
+run_uuid: e1fb7e915bb542389b14d4bc19fa8eaa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1683392024565
+status: 1
+tags: []
+user_id: alfredo

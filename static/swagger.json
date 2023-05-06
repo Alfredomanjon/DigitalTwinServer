@@ -1,0 +1,201 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "API que permite acceder a una vrariedad de modelos para predecir la carga (ocupación) de la vía ",
+    "version": "1.0.0",
+    "title": "API Digital Twin BA",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api-predictions"
+    }
+  ],
+  "paths": {
+    "/" : {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/lstm": {
+      "post": {
+        "requestBody": {
+          "description": "Book Request Post Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LSTMPostBody"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/prophet": {
+      "post": {
+        "requestBody": {
+          "description": "Book Request Post Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProphetPostBody"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "properties": {
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
+      "LSTMPostBody": {
+        "type": "object",
+        "properties": {
+          "tiempo_1": {
+            "type": "object",
+            "properties": {
+              "carga_radar_base": { "type": "number" },
+              "carga_radar_1": { "type": "number" },
+              "distancia_radar_1": { "type": "number" },
+              "duracion_radar_1": { "type": "number" },
+              "carga_radar_2": { "type": "number" },
+              "distancia_radar_2": { "type": "number" },
+              "duracion_radar_2": { "type": "number" },
+              "carga_radar_3": { "type": "number" },
+              "distancia_radar_3": { "type": "number" },
+              "duracion_radar_3": { "type": "number" },
+              "carga_radar_4": { "type": "number" },
+              "distancia_radar_4": { "type": "number" },
+              "duracion_radar_4": { "type": "number" },
+              "carga_radar_5": { "type": "number" },
+              "distancia_radar_5": { "type": "number" },
+              "duracion_radar_5": { "type": "number" }
+            }
+          },
+          "tiempo_2": {
+            "type": "object",
+            "properties": {
+              "carga_radar_base": { "type": "number" },
+              "carga_radar_1": { "type": "number" },
+              "distancia_radar_1": { "type": "number" },
+              "duracion_radar_1": { "type": "number" },
+              "carga_radar_2": { "type": "number" },
+              "distancia_radar_2": { "type": "number" },
+              "duracion_radar_2": { "type": "number" },
+              "carga_radar_3": { "type": "number" },
+              "distancia_radar_3": { "type": "number" },
+              "duracion_radar_3": { "type": "number" },
+              "carga_radar_4": { "type": "number" },
+              "distancia_radar_4": { "type": "number" },
+              "duracion_radar_4": { "type": "number" },
+              "carga_radar_5": { "type": "number" },
+              "distancia_radar_5": { "type": "number" },
+              "duracion_radar_5": { "type": "number" }
+            }
+          },
+          "tiempo_3": {
+            "type": "object",
+            "properties": {
+              "carga_radar_base": { "type": "number" },
+              "carga_radar_1": { "type": "number" },
+              "distancia_radar_1": { "type": "number" },
+              "duracion_radar_1": { "type": "number" },
+              "carga_radar_2": { "type": "number" },
+              "distancia_radar_2": { "type": "number" },
+              "duracion_radar_2": { "type": "number" },
+              "carga_radar_3": { "type": "number" },
+              "distancia_radar_3": { "type": "number" },
+              "duracion_radar_3": { "type": "number" },
+              "carga_radar_4": { "type": "number" },
+              "distancia_radar_4": { "type": "number" },
+              "duracion_radar_4": { "type": "number" },
+              "carga_radar_5": { "type": "number" },
+              "distancia_radar_5": { "type": "number" },
+              "duracion_radar_5": { "type": "number" }
+            }
+          },
+          "tiempo_4": {
+            "type": "object",
+            "properties": {
+              "carga_radar_base": { "type": "number" },
+              "carga_radar_1": { "type": "number" },
+              "distancia_radar_1": { "type": "number" },
+              "duracion_radar_1": { "type": "number" },
+              "carga_radar_2": { "type": "number" },
+              "distancia_radar_2": { "type": "number" },
+              "duracion_radar_2": { "type": "number" },
+              "carga_radar_3": { "type": "number" },
+              "distancia_radar_3": { "type": "number" },
+              "duracion_radar_3": { "type": "number" },
+              "carga_radar_4": { "type": "number" },
+              "distancia_radar_4": { "type": "number" },
+              "duracion_radar_4": { "type": "number" },
+              "carga_radar_5": { "type": "number" },
+              "distancia_radar_5": { "type": "number" },
+              "duracion_radar_5": { "type": "number" }
+            }
+          }
+        }
+      },
+      "ProphetPostBody": {
+        "type": "object",
+        "properties": {
+          "fecha_1": { "type": "string" },
+          "fecha_2": { "type": "string" },
+          "fecha_3": { "type": "string" }
+        }
+      },
+      "bookRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "number"
+          }
+        }
+      }
+    }
+  }
+}

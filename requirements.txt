@@ -1,0 +1,8 @@
+flask
+flask_restful
+tensorflow
+prophet
+pandas
+IPython
+flask-swagger-ui
+mlflow
