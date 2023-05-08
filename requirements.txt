@@ -6,3 +6,5 @@ pandas
 IPython
 flask-swagger-ui
 mlflow
+scikit-learn
+requests

@@ -6,8 +6,11 @@ from prophet.serialize import model_to_json, model_from_json
 from IPython.display import HTML
 import numpy as np
 import pandas as pd
+import pickle
 import json
 import mlflow
+import requests
+
 
 bp = Blueprint("api_predictions", __name__, url_prefix="/api-predictions")
 
@@ -24,7 +27,15 @@ def lstmPredict():
         return "GET A lstm"
     if request.method == "POST":
         lista_datos = []
-        model = load_model("models/LSTM")
+
+        mlflow.set_tracking_uri("http://54.87.203.158:5000")
+
+        experiment_id_path = requests.get(
+            "http://54.87.203.158:5001/experiment/model-lstm/best/path"
+        )
+        response = experiment_id_path.json()
+
+        loaded_model = mlflow.pyfunc.load_model(response["path"])
         json_data = request.get_json(force=True)
         for item in range(len(json_data)):
             valores = json_data["tiempo_" + str(item + 1)]
@@ -67,15 +78,42 @@ def lstmPredict():
                 [df[["carga_radar_5", "distancia_radar_5", "duracion_radar_5"]].values]
             ),
         ]
-        predict_res = model.predict(Input)
+        predict_res = loaded_model.predict(Input)
         return str(predict_res[0])
 
 
 @bp.route("/prophet", methods=("GET", "POST"))
 def prophetPredict():
     if request.method == "POST":
-        with open("models/Prophet/prophet_model.json", "r") as fin:
-            loaded_model = model_from_json(fin.read())  # Load model
+        json_data = request.get_json(force=True)
+        dates = []
+
+        mlflow.set_tracking_uri("http://54.87.203.158:5000")
+
+        experiment_id_path = requests.get(
+            "http://54.87.203.158:5001/experiment/model-prophet/best/path"
+        )
+        response = experiment_id_path.json()
+
+        loaded_model = mlflow.pyfunc.load_model(response["path"])
+
+        for item in range(len(json_data)):
+            dates.append(json_data["fecha_" + str(item + 1)])
+        print(item)
+        fechas = pd.DataFrame({"ds": list(dates)})
+        print(fechas)
+        predicciones = loaded_model.predict(fechas)
+        result = predicciones.to_json(orient="split")
+        parsed = json.loads(result)
+
+        return "hola"
+
+
+@bp.route("/lasso", methods=("GET", "POST"))
+def lassoPredict():
+    if request.method == "POST":
+        with open("models/Lasso/lasso_model.pkl", "rb") as f:
+            model = pickle.load(f)
 
         json_data = request.get_json(force=True)
         dates = []
