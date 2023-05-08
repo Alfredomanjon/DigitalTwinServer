@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 import json
 import mlflow
-import mlflow.tracking as tracking
 
 bp = Blueprint("api_predictions", __name__, url_prefix="/api-predictions")
 
@@ -75,20 +74,8 @@ def lstmPredict():
 @bp.route("/prophet", methods=("GET", "POST"))
 def prophetPredict():
     if request.method == "POST":
-        mlflow.set_tracking_uri("http://54.234.99.106:5000")
-        experiment_name = "prophet-model"
-        experiment_id = (
-            tracking.MlflowClient()
-            .get_experiment_by_name(experiment_name)
-            .experiment_id
-        )
-
-        runs = mlflow.search_runs(
-            experiment_ids=experiment_id, order_by=["metrics.val_acc DESC"]
-        )
-        latest_run_id = runs.iloc[0]["run_id"]
-        model_path = "runs:/{}/prophet".format(latest_run_id)
-        loaded_model = mlflow.pyfunc.load_model(model_path)
+        with open("models/Prophet/prophet_model.json", "r") as fin:
+            loaded_model = model_from_json(fin.read())  # Load model
 
         json_data = request.get_json(force=True)
         dates = []
