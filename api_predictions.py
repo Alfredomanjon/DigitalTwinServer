@@ -78,7 +78,7 @@ def lstmPredict():
                 [df[["carga_radar_5", "distancia_radar_5", "duracion_radar_5"]].values]
             ),
         ]
-        predict_res = loaded_model.predict(Input)
+        predict_res = model.predict(Input)
         return str(predict_res[0])
 
 

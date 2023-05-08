@@ -75,13 +75,6 @@
   },
   "components": {
     "schemas": {
-      "id": {
-        "properties": {
-          "uuid": {
-            "type": "string"
-          }
-        }
-      },
       "LSTMPostBody": {
         "type": "object",
         "properties": {
