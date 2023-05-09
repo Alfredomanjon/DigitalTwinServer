@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "API que permite acceder a una vrariedad de modelos para predecir la carga (ocupación) de la vía ",
-    "version": "1.0.0",
+    "description": "API que permite acceder a una variedad de modelos para predecir la carga (ocupación) de la vía ",
+    "version": "1.0.2",
     "title": "API Digital Twin BA",
     "license": {
       "name": "MIT",
@@ -73,6 +73,30 @@
       }
     },
     "/lasso": {
+      "post": {
+        "requestBody": {
+          "description": "Book Request Post Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LassoPostBody"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/stgnn": {
       "post": {
         "requestBody": {
           "description": "Book Request Post Object",
@@ -203,23 +227,6 @@
         },
         "maxItems": 10,
         "minItems": 10
-      },
-      "bookRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "format": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "number"
-          }
-        }
       }
     }
   }

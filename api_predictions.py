@@ -30,12 +30,16 @@ def lstmPredict():
 
         mlflow.set_tracking_uri("http://54.87.203.158:5000")
 
-        experiment_id_path = requests.get(
-            "http://54.87.203.158:5001/experiment/model-lstm/best/path"
-        )
-        response = experiment_id_path.json()
-
-        loaded_model = mlflow.pyfunc.load_model(response["path"])
+        try:
+            experiment_id_path = requests.get(
+                "http://54.87.203.158:5001/experiment/model-lstm/best/path"
+            )
+            response = experiment_id_path.json()
+            loaded_model = mlflow.pyfunc.load_model(response["path"])
+        except Exception as e:
+            print("[ERROR] carga modelo MLFlow: ", e)
+            loaded_model = load_model("models/LSTM")
+            
         json_data = request.get_json(force=True)
         for item in range(len(json_data)):
             valores = json_data["tiempo_" + str(item + 1)]
@@ -85,34 +89,36 @@ def lstmPredict():
 @bp.route("/prophet", methods=("GET", "POST"))
 def prophetPredict():
     if request.method == "POST":
-        json_data = request.get_json(force=True)
         dates = []
 
         mlflow.set_tracking_uri("http://54.87.203.158:5000")
+        try:
+            experiment_id_path = requests.get(
+                "http://54.87.203.158:5001/experiment/model-prophet/best/path"
+            )
+            response = experiment_id_path.json()
+            model = mlflow.sklearn.load_model(response["path"])
+            loaded_model = model_from_json(json.dumps(model))
+        except Exception as e:
+            print("[ERROR] carga modelo MLFlow: ", e)
+            with open("./models/Prophet/prophet_model.json", "r") as fin:
+                loaded_model = model_from_json(fin.read())
 
-        experiment_id_path = requests.get(
-            "http://54.87.203.158:5001/experiment/model-prophet/best/path"
-        )
-        response = experiment_id_path.json()
-
-        loaded_model = mlflow.pyfunc.load_model(response["path"])
-
+        json_data = request.get_json(force=True)
         for item in range(len(json_data)):
             dates.append(json_data["fecha_" + str(item + 1)])
-        print(item)
+
         fechas = pd.DataFrame({"ds": list(dates)})
-        print(fechas)
         predicciones = loaded_model.predict(fechas)
         result = predicciones.to_json(orient="split")
-        parsed = json.loads(result)
-
-        return "hola"
+        parsed = json.loads(str(result))
+        return json.dumps(parsed, indent=4)
 
 
 @bp.route("/lasso", methods=("GET", "POST"))
 def lassoPredict():
     if request.method == "POST":
-
+        # row = [4315, 1, 883, 6.0, 0.0, 0, 13, 16, 6, 7957]
         response = ''
         mlflow.set_tracking_uri("http://54.87.203.158:5000")
 
@@ -122,15 +128,24 @@ def lassoPredict():
             )
             response = experiment_id_path.json()
             print(response)
-            loaded_model = mlflow.pyfunc.load_model(response["path"])
+            loaded_model = mlflow.sklearn.load_model(response["path"])
             print(load_model)
         except Exception as e:
-            print("ERROR AL CARGAR MLFLOW")
+            print("[ERROR] carga modelo MLFlow: ", e)
             with open("models/Lasso/lasso_model.pkl", "rb") as f:
                 loaded_model = pickle.load(f)
-    
-        row = [4315, 1, 883, 6.0, 0.0, 0, 13, 16, 6, 7957]
 
-        predicciones = loaded_model.predict([row])
+        json_data = request.get_json(force=True)    
+
+        predicciones = loaded_model.predict([json_data])
         parsed = json.loads(str(predicciones))
+        return json.dumps(parsed, indent=4)
+
+
+@bp.route("/stgnn", methods=("GET", "POST"))
+def stgnnPredict():
+        loaded_model = load_model("models/STGNN")
+        json_data = request.get_json(force=True)
+        prediction = loaded_model.predict(json_data)
+        parsed = json.loads(str(prediction))
         return json.dumps(parsed, indent=4)
