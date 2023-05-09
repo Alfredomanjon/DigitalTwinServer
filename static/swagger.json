@@ -27,7 +27,7 @@
     "/lstm": {
       "post": {
         "requestBody": {
-          "description": "Book Request Post Object",
+          "description": "Petición POST para calcular la carga de una via en las próximas 2 horas",
           "required": true,
           "content": {
             "application/json": {
@@ -57,6 +57,30 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ProphetPostBody"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/lasso": {
+      "post": {
+        "requestBody": {
+          "description": "Book Request Post Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LassoPostBody"
               }
             }
           }
@@ -171,6 +195,14 @@
           "fecha_2": { "type": "string" },
           "fecha_3": { "type": "string" }
         }
+      },
+      "LassoPostBody": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "maxItems": 10,
+        "minItems": 10
       },
       "bookRequest": {
         "type": "object",

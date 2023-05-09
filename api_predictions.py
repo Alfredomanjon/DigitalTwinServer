@@ -78,7 +78,7 @@ def lstmPredict():
                 [df[["carga_radar_5", "distancia_radar_5", "duracion_radar_5"]].values]
             ),
         ]
-        predict_res = model.predict(Input)
+        predict_res = loaded_model.predict(Input)
         return str(predict_res[0])
 
 
@@ -112,16 +112,25 @@ def prophetPredict():
 @bp.route("/lasso", methods=("GET", "POST"))
 def lassoPredict():
     if request.method == "POST":
-        with open("models/Lasso/lasso_model.pkl", "rb") as f:
-            model = pickle.load(f)
 
-        json_data = request.get_json(force=True)
-        dates = []
+        response = ''
+        mlflow.set_tracking_uri("http://54.87.203.158:5000")
 
-        for item in range(len(json_data)):
-            dates.append(json_data["fecha_" + str(item + 1)])
-        fechas = pd.DataFrame({"ds": list(dates)})
-        predicciones = loaded_model.predict(fechas)
-        result = predicciones.to_json(orient="split")
-        parsed = json.loads(result)
+        try:
+            experiment_id_path = requests.get(
+                "http://54.87.203.158:5001/experiment/model-lasso/best/path"
+            )
+            response = experiment_id_path.json()
+            print(response)
+            loaded_model = mlflow.pyfunc.load_model(response["path"])
+            print(load_model)
+        except Exception as e:
+            print("ERROR AL CARGAR MLFLOW")
+            with open("models/Lasso/lasso_model.pkl", "rb") as f:
+                loaded_model = pickle.load(f)
+    
+        row = [4315, 1, 883, 6.0, 0.0, 0, 13, 16, 6, 7957]
+
+        predicciones = loaded_model.predict([row])
+        parsed = json.loads(str(predicciones))
         return json.dumps(parsed, indent=4)
